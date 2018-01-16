@@ -17,7 +17,6 @@ def select_difficulty_level():
 		___2___. She was so thin that you could count her vertebrae just by looking at her. Apparently ___4___ was 
 		declawed by her previous owners, then abandoned or ___3___. Since she couldn't hunt, ___4___ nearly starved. 
 		Not only that, but ___4___ had an abscess on one hip.'''
-
 		quiz_answers = ["home","animal","lost","she"]
 
 	elif user_level == "medium":
@@ -26,7 +25,6 @@ def select_difficulty_level():
 		adding ___2___ separated by commas between the parentheses. ___1___s by default return ___3___ if you
 		don't specify the value to return. ___2___ can be standard data types such as string, number, dictionary,
 		tuple, and ___4___ or can be more complicated such as objects and lambda functions.'''
-		
 		quiz_answers = ["function","argument","zero","array"]
 
 	elif user_level == "hard":
@@ -35,15 +33,15 @@ def select_difficulty_level():
 		to complete a thorough peer ___2___. If you assign shorter papers, you can easily devote a part of a ___3___
 		 to peer ___2___ or ask students to complete the peer ___2___ outside of ___3___. But if you assign long, 
 		 complex papers, consider breaking the peer ___2___ into several ___4___ sections. '''
-		
 		quiz_answers = ["paper","review","class","short"]
 
 	else:
+
+		quiz_paragraph = " "
+		quiz_answers = " "
 		print("Not a valid selection. Please try again.")
 		select_difficulty_level()
 
-	print("Quiz paragraph is: " + str(quiz_paragraph))
-	print("Quiz answers are: " + str(quiz_answers))
 	return (quiz_paragraph, quiz_answers)
 
 #=========================================================
@@ -85,8 +83,6 @@ def complete_the_quiz_paragraph(quiz_paragraph, user_answers):
 		if blank != None:
 			answer = blank_to_answer(blank, user_answers)
 			word = word.replace(blank,answer)
-			# print("word is: " + word)
-			# print("complete par is: " + str(complete_paragraph))
 			complete_paragraph.append(word)
 		else:
 			complete_paragraph.append(word)
@@ -114,17 +110,16 @@ def word_is_blank_or_not(word, blank_list):
 	
 	for blank in blank_list:
 		if blank in word:
-			print("blank is: " + str(blank))
+			# print("blank is: " + str(blank))
 			return blank
 	return None
 
 #=========================================================
-#==== Quiz pipeline ======================================
+#==== Quiz functions pipeline ============================
 #=========================================================
 
 def pipeline(quiz_paragraph, quiz_answers):
 	user_answers = get_user_answers()
-	# check_user_answers(user_answers, quiz_answers)
 	complete_paragraph = complete_the_quiz_paragraph(quiz_paragraph, user_answers)
 	print("The complete paragraph is: " + str(complete_paragraph))
 
@@ -133,5 +128,7 @@ def pipeline(quiz_paragraph, quiz_answers):
 #=========================================================
 
 quiz_paragraph, quiz_answers = select_difficulty_level()
+print("Quiz paragraph is: " + str(quiz_paragraph))
+print("Quiz answers are: " + str(quiz_answers))
 pipeline(quiz_paragraph, quiz_answers)
 

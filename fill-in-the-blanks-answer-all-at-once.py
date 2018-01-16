@@ -1,3 +1,8 @@
+#=========================================================
+#==== Fill-in-the-blanks Quiz ============================
+#==== Version: Answer all at once ========================
+#=========================================================
+
 # For this project, I'll be building a Fill-in-the-Blanks quiz.
 # It will prompt a user with a paragraph containing several blanks.
 # The user should then fill in each blank appropriately to complete the paragraph.
@@ -89,7 +94,11 @@ def update_hard_quiz_paragraph_and_answers():
 #=========================================================
 #==== Get user answers ===================================
 #=========================================================
-
+"""
+	Behavior: This function gets the user inputs (answers) 
+	Inputs: This function doesn't take any inputs
+	Outputs: The output is user answers list
+"""
 def get_user_answers():
 
 	user_answers = []
@@ -102,9 +111,14 @@ def get_user_answers():
 	return user_answers
 
 #=========================================================
-#==== Check user answers ===================================
+#==== Check user answers =================================
 #=========================================================
-
+"""
+	Behavior: This function compares the user answers with
+			  quiz answers
+	Inputs: The inputs are the user and quiz answers
+	Outputs: This function has no outputs
+"""
 def check_user_answers(user_answers, quiz_answers):
 
 	if user_answers == quiz_answers:
@@ -116,7 +130,13 @@ def check_user_answers(user_answers, quiz_answers):
 #=========================================================
 #==== Complete the quiz paragraph ========================
 #=========================================================
-
+"""
+	Behavior: This function completes the quiz paragraph 
+			  with user answers 
+	Inputs: The inputs are the quiz paragraph and the user 
+			answers
+	Outputs: The output is the complete paragraph 
+"""
 def complete_the_quiz_paragraph(quiz_paragraph, user_answers):
 
 	blank_list = ['___1___','___2___','___3___','___4___']
@@ -135,9 +155,15 @@ def complete_the_quiz_paragraph(quiz_paragraph, user_answers):
 	return complete_paragraph
 
 #=========================================================
-#==== Blank to answer mapping ============================
+#==== Blank to user answer mapping =======================
 #=========================================================
-
+"""
+	Behavior: This function maps the blank number with the
+			  correspinding user answer
+	Inputs: The inputs are the blank number and the user 
+			answers
+	Outputs: The output is either user answers or nothing 
+"""
 def blank_to_answer(blank, user_answers):
     mapper = {
         "___1___": user_answers[0],
@@ -151,28 +177,46 @@ def blank_to_answer(blank, user_answers):
 #=========================================================
 #==== Check if the word is blank or not ==================
 #=========================================================
-
+"""
+	Behavior: This function checks to see whether the word
+			  in the original paragraph is blank or not 
+	Inputs: This inputs are the paragraph words and the list
+			of blanks
+	Outputs: The output is either each blank item or none 
+			 depending on the word 
+"""
 def word_is_blank_or_not(word, blank_list):
 	
 	for blank in blank_list:
 		if blank in word:
-			# print("blank is: " + str(blank))
 			return blank
 	return None
 
 #=========================================================
 #==== Quiz functions pipeline ============================
 #=========================================================
-
+"""
+	Behavior: This function is the main pipeline of the program 
+	Inputs: The inputs are the quiz paragraph and answers
+	Outputs: This function has no outputs
+"""
 def pipeline(quiz_paragraph, quiz_answers):
+
 	user_answers = get_user_answers()
+	check_user_answers(user_answers, quiz_answers)
 	complete_paragraph = complete_the_quiz_paragraph(quiz_paragraph, user_answers)
 	print("The complete paragraph is: " + str(complete_paragraph))
 
 #=========================================================
 #==== Start the Quiz =====================================
 #=========================================================
-
+"""
+	We start the quiz by selecting the difficulty level and then
+	displaying the quiz paragraph and answers. After that we go
+	through the quiz pipeline (NOTE: quiz answers are displayed 
+	only for testing purposes. Please comment or remove the line 
+	before playing the game)
+"""
 quiz_paragraph, quiz_answers = select_difficulty_level()
 print("Quiz paragraph is: " + str(quiz_paragraph))
 print("Quiz answers are: " + str(quiz_answers))

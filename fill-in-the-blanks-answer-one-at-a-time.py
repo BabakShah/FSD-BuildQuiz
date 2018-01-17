@@ -1,6 +1,5 @@
 #=========================================================
 #==== Fill-in-the-blanks Quiz ============================
-#==== Version: Answer one at a time ======================
 #=========================================================
 
 # For this project, I'll be building a Fill-in-the-Blanks quiz.
@@ -20,12 +19,10 @@ def select_difficulty_level():
 	user_level = input("Please select game level of difficulty: (easy, medium, hard) : ")
 	print("Your selected difficulty level is: " + str(user_level))
 
-	if user_level == "easy":
-		quiz_paragraph, quiz_answers = update_easy_quiz_paragraph_and_answers()
-	elif user_level == "medium":
-		quiz_paragraph, quiz_answers = update_medium_quiz_paragraph_and_answers()
-	elif user_level == "hard":
-		quiz_paragraph, quiz_answers = update_hard_quiz_paragraph_and_answers()
+	if user_level == "easy" or user_level == "medium" or user_level == "hard":
+		quiz_paragraph = quiz_paragraph_and_answers[user_level]['quiz_paragraph']
+		quiz_answers = quiz_paragraph_and_answers[user_level]['quiz_answers']
+	
 	else:
 		quiz_paragraph = " "
 		quiz_answers = " "
@@ -35,61 +32,32 @@ def select_difficulty_level():
 	return (quiz_paragraph, quiz_answers)
 
 #=========================================================
-#==== Update easy quiz paragraph and answers =============
+#==== Quiz paragraphs and answers object =================
 #=========================================================
-"""
-	Behavior: This function updates the easy quiz paragraph 
-			  and answers based on the difficulty level 
-	Inputs: This function doesn't take any inputs
-	Outputs: The outputs are the quiz paragraph and quiz answers
-"""
-def update_easy_quiz_paragraph_and_answers():
 
-	quiz_paragraph = '''When I first brought my cat ___1___ from the Humane Society she was a mangy, pitiful 
-	___2___. She was so thin that you could count her vertebrae just by looking at her. Apparently ___4___ was 
-	declawed by her previous owners, then abandoned or ___3___. Since she couldn't hunt, ___4___ nearly starved. 
-	Not only that, but ___4___ had an abscess on one hip.'''
-	quiz_answers = ["home","animal","lost","she"]
-
-	return (quiz_paragraph, quiz_answers)
-
-#=========================================================
-#==== Update medium quiz paragraph and answers ===========
-#=========================================================
-"""
-	Behavior: This function updates the medium quiz paragraph 
-			  and answers based on the difficulty level 
-	Inputs: This function doesn't take any inputs
-	Outputs: The outputs are the quiz paragraph and quiz answers
-"""
-def update_medium_quiz_paragraph_and_answers():
-
-	quiz_paragraph = '''A ___1___ is created with the def keyword. You specify the inputs a ___1___ takes by
-	adding ___2___ separated by commas between the parentheses. ___1___s by default return ___3___ if you
-	don't specify the value to return. ___2___ can be standard data types such as string, number, dictionary,
-	tuple, and ___4___ or can be more complicated such as objects and lambda functions.'''
-	quiz_answers = ["function","argument","zero","array"]
-
-	return (quiz_paragraph, quiz_answers)
-
-#=========================================================
-#==== Update hard quiz paragraph and answers =============
-#=========================================================
-"""
-	Behavior: This function updates the hard quiz paragraph 
-			  and answers based on the difficulty level 
-	Inputs: This function doesn't take any inputs
-	Outputs: The outputs are the quiz paragraph and quiz answers
-"""
-def update_hard_quiz_paragraph_and_answers():
-
-	quiz_paragraph = '''The longer the ___1___ or the more complex the criteria, the longer students will take 
-	to complete a thorough peer ___2___. If you assign shorter papers, you can easily devote a part of a ___3___
-	to peer ___2___ or ask students to complete the peer ___2___ outside of ___3___. But if you assign long, 
-	complex papers, consider breaking the peer ___2___ into several ___4___ sections. '''
-	quiz_answers = ["paper","review","class","short"]
-
-	return (quiz_paragraph, quiz_answers)
+quiz_paragraph_and_answers = {
+	'easy': {
+		'quiz_paragraph' : '''When I first brought my cat ___1___ from the Humane Society she was a mangy, pitiful 
+		___2___. She was so thin that you could count her vertebrae just by looking at her. Apparently ___4___ was 
+		declawed by her previous owners, then abandoned or ___3___. Since she couldn't hunt, ___4___ nearly starved. 
+		Not only that, but ___4___ had an abscess on one hip.''',
+		'quiz_answers' : ["home","animal","lost","she"]
+	},
+	'medium': {
+		'quiz_paragraph' : '''A ___1___ is created with the def keyword. You specify the inputs a ___1___ takes by
+		adding ___2___ separated by commas between the parentheses. ___1___s by default return ___3___ if you
+		don't specify the value to return. ___2___ can be standard data types such as string, number, dictionary,
+		tuple, and ___4___ or can be more complicated such as objects and lambda functions.''',
+		'quiz_answers' : ["function","argument","zero","array"]
+	},
+	'hard': {
+		'quiz_paragraph' : '''The longer the ___1___ or the more complex the criteria, the longer students will take 
+		to complete a thorough peer ___2___. If you assign shorter papers, you can easily devote a part of a ___3___
+		to peer ___2___ or ask students to complete the peer ___2___ outside of ___3___. But if you assign long, 
+		complex papers, consider breaking the peer ___2___ into several ___4___ sections. ''',
+		'quiz_answers' : ["paper","review","class","short"]
+	}
+}
 
 #=========================================================
 #==== Get user answers ===================================
@@ -101,10 +69,27 @@ def update_hard_quiz_paragraph_and_answers():
 """
 def get_user_answers(quiz_paragraph, quiz_answers):
 
-	number_of_blanks = 4
-	for blank in range(0,number_of_blanks):
-		user_answer = input("Please fill in the ___" + str(blank + 1) + "___ blank: ")
+	updated_quiz_paragraph = quiz_paragraph
+
+	# number_of_blanks = 4
+	blank_list = ['___1___','___2___','___3___','___4___']
+	for count,blank in enumerate(blank_list):
+		
+		is_blank = word_is_blank_or_not(blank, blank_list)
+		quiz_answer = blank_to_quiz_answer(is_blank, quiz_answers)
+		user_answer = input("Please fill in the ___" + str(count + 1) + "___ blank: ")
 		print("Your answer is: " + str(user_answer))
+		print("Quiz answer is: "+quiz_answer)
+
+		if is_blank != None:
+			if user_answer != quiz_answer:
+				print("Your answer is wrong. Let's start over.")
+				get_user_answers(quiz_paragraph, quiz_answers)
+				
+			if user_answer == quiz_answer:
+				print("Your answer is correct!")
+				print(updated_quiz_paragraph.replace(is_blank,user_answer))
+
 		complete_paragraph = complete_the_quiz_paragraph(quiz_paragraph, user_answer, quiz_answers)
 	
 	return complete_paragraph
@@ -131,9 +116,8 @@ def complete_the_quiz_paragraph(quiz_paragraph, user_answer, quiz_answers):
 		if blank != None:
 			quiz_answer = blank_to_quiz_answer(blank, quiz_answers)
 			word = word.replace(blank,user_answer)
-			if user_answer == quiz_answer:
-				print("Your answer is CORRECT!!!")
-				print(updated_quiz_paragraph.replace(blank,user_answer))
+			# if user_answer == quiz_answer:
+				# print("Your answer is correct!")
 			complete_paragraph.append(word)
 		else:
 			complete_paragraph.append(word)

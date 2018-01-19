@@ -123,6 +123,7 @@ def complete_the_quiz_paragraph(quiz_paragraph, user_answer, quiz_answers):
 			complete_paragraph.append(word)
 		
 		# print(complete_paragraph)
+	print("Quiz paragraph with " + str(blank) + "filled in is :")
 	complete_paragraph = " ".join(complete_paragraph)
 
 	return complete_paragraph
